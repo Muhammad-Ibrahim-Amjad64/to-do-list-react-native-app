@@ -1,0 +1,125 @@
+import Goalitem from "./comp/Goalitem";
+import { StatusBar } from 'expo-status-bar';
+import React,{ useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput,TouchableOpacity , ScrollView, FlatList } from 'react-native';
+
+
+export default function App() {
+  const [goal,setgoal]= useState(null);
+  const [goalList,setgoalList]= useState([]);
+
+  // function goalHandeler(enteredText) {
+  //   setgoal(enteredText);
+  // This function is equvalent to the below function 
+
+  const  goalHandeler=(enteredText)=> {
+    setgoal(enteredText)
+    // ye set goal goal ki value update kry ga with every  key stroke
+  }
+
+  const addGoalHandler= ()=>{
+    
+      // currentGoals contains all the current states ... redirects all the current goals and adds the new goal/state in the goallist 
+      setgoalList(currentGoals=> [...currentGoals, {id:Math.random().toString() , value: goal}])
+      // agar keys ka arror aa rha ho tou sbki keys set krdo
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.screen}>
+      {/* is view mn adding  */}
+      <TextInput placeholder='type your goal please :)' style={styles.textInput} onChangeText={goalHandeler}  value={goal}/>
+      
+
+      <Button title='Add to your task' color={'rgb(20, 23, 81)'}  onPress={addGoalHandler} />
+      {/* //'rgb(134, 255, 215)'  ye wo sea green button*/} 
+
+      </View>
+      {/*  Using flat insted of ScrollView aur flat list can replay the map method of arry with the help of render item  */}
+       {/* key agar id set hogi tou hm key extracter ka use krskta hain  */}
+      <FlatList 
+      // flat list is used to generate unique keys for all items : )
+      // item.id = is the index of the item . by default ye =>item.key hota ha mgr hmne uper id ki islia yahan bhi id karain gy item.id is the id of an item (goal) 
+      //  we dont need key flatlist automatically key generate krta ha but not arrays of strings is not supported . us array mn key honi zarori ha 
+      keyExtractor={(item,index)=>item.id} 
+      data={goalList} 
+      renderItem={goalitem=>(
+        <Goalitem goaltitle={goalitem.item.value}/>
+       
+
+        
+      
+      )
+      }/>
+      {/* jis view ko scroll view se replace karain gy wo scrollable ho ja aa ga  */}
+      {/* <ScrollView> */}
+        {/* is view mn list of tasks display  */}
+      
+        {/* key is the unique identifier for each goal this syntax is alsi react specific hmne key goal ka naam hi set kr dia so hm aik task do bar add nai kraain gy assuming   */}
+
+       {/* {goalList.map((mygoal)=>(
+       
+        <View key={mygoal}>
+       <Text  style={styles.listofgoals}>{mygoal}</Text>
+        </View>
+        // islo view mn islia wrap kia coz view zayada styling support krta ha
+         
+       
+       ))} */}
+
+
+ 
+        
+      {/* </ScrollView> */}
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+
+
+  screen:{
+    // flex:1,
+    
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
+    
+  },
+  container: {
+    padding:80,
+    flex:1,
+
+    backgroundColor:'black',
+
+    // alignItems:'center',
+  },
+
+  button:{
+    backgroundColor:'cyan',
+    // color:"rgb(134, 255, 215)",
+    // backgroundColor2:'black',
+
+    textDecorationColor:'bleck',
+    borderColor:"blue",
+    // borderWidth:5,
+  
+  } ,
+
+  textInput:{
+        // marginRight:30,
+
+    // justifyContent:'space-around',
+    // alignItems:'center',
+    
+    // maxWidth:1000,
+    width:'60%',
+    
+    backgroundColor:'white',
+    borderColor:'cyan',
+    borderWidth:1,padding:5},
+
+
+  
+
+});
